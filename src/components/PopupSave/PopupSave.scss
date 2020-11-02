@@ -1,0 +1,17 @@
+@import "../../scss/variables";
+
+.popup {
+  padding: 15px 20px;
+
+  text-transform: uppercase;
+
+  background-color: $white;
+
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 1;
+
+  border-radius: $border-radius-form;
+  box-shadow: 0 0 8px $gray-600;
+}

@@ -1,0 +1,72 @@
+@import "../../scss/variables.scss";
+
+.projects__inner {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0;
+}
+
+.projects__add {
+  width: 170px;
+  height: 170px;
+  margin-right: 20px;
+  padding: 15px 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  text-align: center;
+
+  border: 1px dashed $gray-800;
+}
+
+.projects__label {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.projects__plus {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+
+  background: none;
+  border: 1px solid $gray-800;
+  border-radius: 50%;
+  cursor: pointer;
+
+  position: relative;
+
+  transition: background 0.3s ease-out;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:hover {
+    background-color: $gray-800;
+    outline: 0;
+  }
+
+  &:hover .projects__icon {
+    color: $white;
+  }
+}
+
+.projects__icon {
+  margin: auto;
+
+  font-size: $font-icon;
+  color: $gray-800;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+
+  transition: color 0.3s linear;
+}

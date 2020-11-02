@@ -1,0 +1,83 @@
+@import "../../scss/variables.scss";
+
+.signin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 360px;
+  margin: 50px auto;
+  padding: 20px 30px;
+
+  background-color: $white;
+  border: 1px solid $orange-500;
+  border-radius: $border-radius-card;
+  box-shadow: $card-shadow;
+}
+
+.signin__label {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 30px;
+
+  border: 1px solid $orange-500;
+  border-radius: 50%;
+
+  position: relative;
+}
+
+.signin__sticker {
+  margin: auto;
+
+  color: $orange-500;
+  font-size: $font-icon;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.signin__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.signin__text {
+  margin: 0 12px;
+
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: $font-200;
+}
+
+.signin__btn {
+  background: none;
+  border: 0;
+  padding: 0;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+  }
+}
+
+.signin__icon {
+  margin: 0 12px;
+
+  font-size: $font-700;
+  color: $blue-900;
+
+  cursor: pointer;
+
+  transition: color 0.3s linear;
+
+  &:hover {
+    color: $blue-500;
+  }
+}

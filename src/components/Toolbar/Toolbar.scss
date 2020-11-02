@@ -1,0 +1,38 @@
+@import "../../scss/variables";
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: $gray-800;
+
+  position: relative;
+}
+
+.toolbar__btn {
+  width: 100%;
+  padding: 14px 12px;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $gray-200;
+  }
+}
+
+.toolbar__btn:hover,
+.toolbar__btn:focus {
+  outline: 0;
+}
+
+.toolbar__icon {
+  font-size: $font-600;
+  color: $white;
+}
+
+.selected {
+  background-color: $gray-200;
+}

@@ -1,0 +1,74 @@
+@import "../../scss/variables.scss";
+
+.note {
+  width: 140px;
+  height: 100px;
+
+  border: 1px solid $yellow;
+  border-radius: $border-radius-form;
+  cursor: pointer;
+
+  position: absolute;
+}
+
+.note__textarea {
+  width: 140px;
+  height: 100px;
+  padding: 10px 15px;
+
+  font-family: inherit;
+  font-size: inherit;
+
+  background-color: $yellow;
+  border: 1px solid $yellow;
+  border-radius: $border-radius-form;
+
+  resize: none;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+  }
+}
+
+.note__text {
+  width: 100%;
+  height: 100%;
+  padding: 10px 15px;
+
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  background-color: $yellow;
+}
+
+.hide {
+  position: absolute;
+  top: -500px !important;
+  left: -500px !important;
+}
+
+/* Media */
+@media (max-width: 1500px) {
+  .note,
+  .note__textarea {
+    width: 120px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .note,
+  .note__textarea {
+    width: 100px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .note,
+  .note__textarea {
+    width: 90px;
+  }
+}

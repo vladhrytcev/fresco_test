@@ -1,0 +1,50 @@
+@import "../../scss/variables.scss";
+
+.header {
+  color: $white;
+
+  background-color: $gray-600;
+}
+
+.header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+
+  padding: 18px 0;
+
+  color: $orange-500;
+  font-family: $secondary-font;
+  font-size: $font-700;
+  text-transform: uppercase;
+  text-shadow: $logo-shadow;
+}
+
+.header__profile {
+  display: flex;
+  align-items: center;
+}
+
+.header__user,
+.header__icon {
+  margin: 0 12px;
+}
+
+.header__icon {
+  font-size: $font-600;
+
+  &--chalkboard {
+    color: $orange-500;
+    font-size: $font-700;
+  }
+}
+
+.header__user {
+  font-size: $font-300;
+  font-weight: 500;
+}

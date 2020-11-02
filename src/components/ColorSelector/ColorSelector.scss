@@ -1,0 +1,38 @@
+@use "sass:color";
+@import "../../scss/variables";
+
+.selector {
+  display: none;
+
+  background-color: $gray-600;
+
+  position: absolute;
+  top: 108px;
+  left: 50px;
+  z-index: 1;
+}
+
+.selector__inner {
+  display: flex;
+
+  padding: 12px 8px;
+}
+
+.selector__item {
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 10px $white;
+  }
+}
+
+.active {
+  display: block;
+}
