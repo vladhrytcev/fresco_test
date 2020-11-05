@@ -1,4 +1,4 @@
-@import "../../scss/variables.scss";
+@import "../../scss/variables";
 
 .card {
   width: 170px;
@@ -9,7 +9,7 @@
   text-align: center;
 
   background-color: $white;
-  border: 1px solid $gray-800;
+  border: 1px solid $gray-400;
 }
 
 .card__title {
@@ -49,13 +49,13 @@
 
 .card__icon {
   font-size: $font-icon;
-  color: $gray-800;
+  color: $gray-400;
 
   cursor: pointer;
 
   transition: color 0.3s linear;
 
   &:hover {
-    color: $orange-500;
+    color: $orange;
   }
 }

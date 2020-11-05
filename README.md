@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Description App
+
+1. The user can create his own grid or use a ready-made grid (Canvas Digital Policy Model).
+2. The following tools are available to the user: cursor (for selecting a shape and its subsequent movement), sticky note, brush, rectangle with text (for creating a custom grid; available if selected custom template), saving button.
+3. The rectangle with the text can be moved, rotated, resized, changed the text.
+4. To move, rotate and resize the rectangle with text, you need to select the tool pointer and click the rectangle with text. The rectangle will then be wrapped in a blue border and you can move, rotate and resize it.
+5. To change the text in the rectangle, double-click the text, type text you want, and press Enter button.
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -5,7 +5,7 @@ body {
 
   font-family: $primary-font;
   font-size: $font-100;
-  color: $gray-800;
+  color: $gray-400;
 
   background-color: $gray-100;
 }
@@ -32,5 +32,3 @@ p {
   margin: 0 auto;
   padding: 0 25px;
 }
-
-@import "../layouts/Header/Header.scss";

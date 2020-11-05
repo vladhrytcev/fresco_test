@@ -16,7 +16,7 @@ const ProjectCard = ({ project, setActiveProject }) => {
 
   const handleClick = () => {
     setActiveProject(project);
-    history.push(ROUTES.WORKSPACE);
+    history.push(ROUTES.DASHBOARD);
   };
 
   return (

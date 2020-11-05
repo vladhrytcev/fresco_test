@@ -1,5 +1,5 @@
-export const CREATE_PROJECT = "CREATE_PROJECT";
-export const SET_ACTIVE_PROJECT = "SET_ACTIVE_PROJECT";
+const CREATE_PROJECT = "CREATE_PROJECT";
+const SET_ACTIVE_PROJECT = "SET_ACTIVE_PROJECT";
 
 export const createProject = (project) => ({
   type: CREATE_PROJECT,

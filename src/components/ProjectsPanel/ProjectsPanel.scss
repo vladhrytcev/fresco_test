@@ -1,4 +1,4 @@
-@import "../../scss/variables.scss";
+@import "../../scss/variables";
 
 .projects__inner {
   display: flex;
@@ -19,7 +19,7 @@
 
   text-align: center;
 
-  border: 1px dashed $gray-800;
+  border: 1px dashed $gray-400;
 }
 
 .projects__label {
@@ -33,7 +33,7 @@
   padding: 0;
 
   background: none;
-  border: 1px solid $gray-800;
+  border: 1px solid $gray-400;
   border-radius: 50%;
   cursor: pointer;
 
@@ -46,7 +46,7 @@
   }
 
   &:hover {
-    background-color: $gray-800;
+    background-color: $gray-400;
     outline: 0;
   }
 
@@ -59,7 +59,7 @@
   margin: auto;
 
   font-size: $font-icon;
-  color: $gray-800;
+  color: $gray-400;
 
   position: absolute;
   top: 0;

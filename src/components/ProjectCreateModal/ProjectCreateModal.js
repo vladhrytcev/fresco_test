@@ -14,7 +14,7 @@ const ProjectCreateModal = ({
   const [fieldValues, setFieldValues] = useState({
     projectTitle: "",
     projectDescription: "",
-    projectTemplate: "None",
+    projectTemplate: "Custom",
   });
 
   const handleChange = (prop) => ({ target }) => {
@@ -78,11 +78,11 @@ const ProjectCreateModal = ({
                       Template
                     </label>
                     <select
-                      className="modal__field"
+                      className="modal__field  modal__field--select"
                       id="project-template"
                       onChange={handleChange("projectTemplate")}
                     >
-                      <option className="modal__option">None</option>
+                      <option className="modal__option">Custom</option>
                       <option className="modal__option">
                         Digital Policy Model Canvas
                       </option>

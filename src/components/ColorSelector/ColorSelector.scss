@@ -1,13 +1,12 @@
-@use "sass:color";
 @import "../../scss/variables";
 
 .selector {
   display: none;
 
-  background-color: $gray-600;
+  background-color: $gray-300;
 
   position: absolute;
-  top: 108px;
+  top: 180px;
   left: 50px;
   z-index: 1;
 }

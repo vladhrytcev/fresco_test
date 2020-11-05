@@ -1,21 +1,17 @@
 import React from "react";
+import { connect } from "react-redux";
+import { selectColorBrush } from "../../redux/tools/tools";
 import { v4 as uuidv4 } from "uuid";
 import { palette } from "../../constants/palette";
+import { toolsList } from "../../constants/toolsList";
 import "./ColorSelector.scss";
 
-const ColorSelector = ({
-  currentTool,
-  switchBrushTool,
-  selectColorBrush,
-  switchPaletteTool,
-}) => {
+const ColorSelector = ({ tools, actions }) => {
   const colors = Object.values(palette);
 
-  const conditionShowingColorSelector = currentTool === "palette";
+  const conditionShowingColorSelector = tools.currentTool === toolsList.palette;
   const chooseColorBrush = ({ target }) => {
-    selectColorBrush(target.style.backgroundColor);
-    switchPaletteTool(false);
-    switchBrushTool(true);
+    actions.selectColorBrush(target.style.backgroundColor);
   };
 
   return (
@@ -36,4 +32,14 @@ const ColorSelector = ({
   );
 };
 
-export default ColorSelector;
+const mapStateToProps = (state) => ({
+  tools: state.tools,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: {
+    selectColorBrush: (color) => dispatch(selectColorBrush(color)),
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorSelector);

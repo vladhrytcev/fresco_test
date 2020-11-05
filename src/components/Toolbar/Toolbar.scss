@@ -5,9 +5,7 @@
   flex-direction: column;
   align-items: center;
 
-  background-color: $gray-800;
-
-  position: relative;
+  background-color: $gray-400;
 }
 
 .toolbar__btn {
@@ -17,6 +15,10 @@
   background: none;
   border: none;
   cursor: pointer;
+
+  &--save {
+    position: relative;
+  }
 
   &:hover {
     background-color: $gray-200;

@@ -1,4 +1,4 @@
-export const SAVE_LAYER = "SAVE_LAYER";
+const SAVE_LAYER = "SAVE_LAYER";
 
 export const saveLayer = (layer) => ({
   type: SAVE_LAYER,
@@ -18,8 +18,6 @@ export const layers = (state = initialState, { type, payload }) => {
           if (layer.projectId === payload.layer.projectId) {
             return {
               ...layer,
-              notes: payload.layer.notes,
-              gridLayer: payload.layer.gridLayer,
               drawLayer: payload.layer.drawLayer,
             };
           } else {

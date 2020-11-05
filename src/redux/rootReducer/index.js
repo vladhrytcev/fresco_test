@@ -1,14 +1,20 @@
 import { combineReducers } from "redux";
 import { users } from "../users/users";
-import { projects } from "../projects/projects";
-import { headerDimension } from "../headerDimension/headerDimension";
+import { notes } from "../notes/notes";
 import { layers } from "../layers/layers";
-import { toolbarDimension } from "../toolbarDimension/toolbarDimension";
+import { projects } from "../projects/projects";
+import { tools } from "../tools/tools";
+import { rectangles } from "../rectangles/rectangles";
+import { columns } from "../columns/columns";
+import { dimensions } from "../dimensions/dimensions";
 
 export const rootReducer = combineReducers({
   users,
   projects,
-  headerDimension,
   layers,
-  toolbarDimension,
+  notes,
+  tools,
+  rectangles,
+  columns,
+  dimensions,
 });

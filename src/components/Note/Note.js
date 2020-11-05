@@ -1,60 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { connect } from "react-redux";
+import {
+  setFocusedNoteId,
+  changeTextInExistingNote,
+  changePositionInExistingNote,
+} from "../../redux/notes/notes";
 import { layouts } from "../../constants/layouts";
+import { setReferenceData } from "../../utils";
+import { checkConditionForStopMovingNote } from "./NoteHelpers";
+import { toolsList } from "../../constants/toolsList";
 import "./Note.scss";
 
-const Note = ({
-  note,
-  tools,
-  sizeCanvas,
-  noteChange,
-  currentTool,
-  noteLayoutChange,
-}) => {
+const Note = ({ note, actions, sizeCanvas, tools, notes }) => {
   const [isEditableNote, setIsEditableNote] = useState(true);
   const [finalNoteCoords, _setFinalNoteCoords] = useState({});
   const [offsetsNoteFromParent, _setOffsetsNoteFromParent] = useState({});
 
-  const handleBlur = () => note.text.length > 0 && setIsEditableNote(false);
-  const switchEditableNote = () => setIsEditableNote(true);
-
-  const offsetsNoteFromParentRef = useRef(offsetsNoteFromParent);
-  const setOffsetsNoteFromParent = (offsets) => {
-    offsetsNoteFromParentRef.current = offsets;
-    _setOffsetsNoteFromParent(offsets);
-  };
-
   const finalNoteCoordsRef = useRef(finalNoteCoords);
-  const setFinalNoteCoords = (coords) => {
-    finalNoteCoordsRef.current = coords;
-    _setFinalNoteCoords(coords);
-  };
+  const offsetsNoteFromParentRef = useRef(offsetsNoteFromParent);
 
-  const checkConditionForStopMovingNote = (
-    mouseCoords,
-    offsetsNoteFromParentRef,
-    sizeCanvas,
-    clientRect,
-    layouts,
-    isEditableNote
-  ) => {
-    const { x: mouseX, y: mouseY } = mouseCoords;
-    const {
-      x: offsetsNoteX,
-      y: offsetsNoteY,
-    } = offsetsNoteFromParentRef.current;
-    const { width: widthCanvas, height: heightCanvas } = sizeCanvas;
-    const { width: widthClientRect, height: heightClientRect } = clientRect;
+  const switchEditableNote = () => setIsEditableNote(true);
+  const handleBlur = () => note.text.length > 0 && setIsEditableNote(false);
 
-    const conditonStopMovingNote =
-      mouseX - offsetsNoteX >
-        widthCanvas - widthClientRect - layouts.coefficientLimitMovingShape ||
-      mouseX - offsetsNoteX < layouts.coefficientLimitMovingShape ||
-      mouseY - offsetsNoteY >
-        heightCanvas - heightClientRect - layouts.coefficientLimitMovingShape ||
-      mouseY - offsetsNoteY < layouts.coefficientLimitMovingShape ||
-      isEditableNote;
+  const handleFocus = ({ target }) => actions.setFocusedNoteId(target.id);
 
-    return conditonStopMovingNote;
+  const noteTextChange = ({ target }) => {
+    const text = target.value;
+    const noteId = target.id;
+    actions.changeTextInExistingNote({ noteId, text });
   };
 
   const moveNote = (event) => {
@@ -69,40 +42,48 @@ const Note = ({
     const clientRect = event.target.getBoundingClientRect();
 
     const conditonStopMovingNote = checkConditionForStopMovingNote(
-      mouseCoords,
-      offsetsNoteFromParentRef,
+      layouts,
       sizeCanvas,
       clientRect,
-      layouts,
-      isEditableNote
+      mouseCoords,
+      isEditableNote,
+      offsetsNoteFromParentRef
     );
 
     if (conditonStopMovingNote) return;
 
-    setFinalNoteCoords({
+    const gettedFinalCoords = {
       x: mouseX - diffBetweenDocAndParentX,
       y: mouseY - diffBetweenDocAndParentY,
-    });
+    };
+
+    setReferenceData(
+      gettedFinalCoords,
+      finalNoteCoordsRef,
+      _setFinalNoteCoords
+    );
   };
 
   const endMoveNote = (event) => {
     if (isEditableNote) return;
 
     const layout = {
-      id: event.target.id,
+      noteId: event.target.id,
       x: finalNoteCoordsRef.current.x,
       y: finalNoteCoordsRef.current.y,
     };
 
-    setOffsetsNoteFromParent({});
+    setReferenceData({}, offsetsNoteFromParentRef, _setOffsetsNoteFromParent);
+
+    if (!!(layout.noteId && layout.x && layout.y))
+      actions.changePositionInExistingNote(layout);
+
     window.removeEventListener("mousemove", moveNote);
     window.removeEventListener("mouseup", endMoveNote);
-
-    noteLayoutChange(layout);
   };
 
   const startMoveNote = (event) => {
-    if (currentTool !== tools.pointer) return;
+    if (tools.currentTool !== toolsList.pointer) return;
     const {
       offsetLeft: relatedToParentX,
       offsetTop: relatedToParentY,
@@ -110,19 +91,30 @@ const Note = ({
 
     const { pageX: mouseX, pageY: mouseY } = event;
 
-    setOffsetsNoteFromParent({
+    const offsets = {
       x: mouseX - relatedToParentX,
       y: mouseY - relatedToParentY,
-    });
+    };
+
+    setReferenceData(
+      offsets,
+      offsetsNoteFromParentRef,
+      _setOffsetsNoteFromParent
+    );
 
     window.addEventListener("mousemove", moveNote);
     window.addEventListener("mouseup", endMoveNote);
   };
 
+  useEffect(() => {
+    console.log(!!notes.focusedNoteId);
+    actions.setFocusedNoteId("");
+  }, []); // eslint-disable-line
+
   return (
     <div
-      id={note.id}
-      key={note.id}
+      id={note.noteId}
+      key={note.noteId}
       className="note"
       onMouseDown={startMoveNote}
       onDoubleClick={switchEditableNote}
@@ -133,15 +125,16 @@ const Note = ({
     >
       {isEditableNote ? (
         <textarea
-          autoFocus
-          id={note.id}
+          autoFocus={!!notes.focusedNoteId}
+          id={note.noteId}
           value={note.text}
           onBlur={handleBlur}
-          onChange={noteChange}
+          onFocus={handleFocus}
+          onChange={noteTextChange}
           className="note__textarea"
         />
       ) : (
-        <div id={note.id} className="note__text">
+        <div id={note.noteId} className="note__text">
           {note.text}
         </div>
       )}
@@ -149,4 +142,19 @@ const Note = ({
   );
 };
 
-export default Note;
+const mapStateToProps = (state) => ({
+  tools: state.tools,
+  notes: state.notes,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  actions: {
+    changePositionInExistingNote: (note) =>
+      dispatch(changePositionInExistingNote(note)),
+    changeTextInExistingNote: (note) =>
+      dispatch(changeTextInExistingNote(note)),
+    setFocusedNoteId: (noteId) => dispatch(setFocusedNoteId(noteId)),
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Note);
