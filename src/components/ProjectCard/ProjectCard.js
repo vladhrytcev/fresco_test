@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { setCurrentTool } from "../../redux/tools/tools";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faFileAlt } from "@fortawesome/free-solid-svg-icons";
 import ProjectCardModal from "../ProjectCardModal";
-import { useHistory } from "react-router-dom";
+import { toolsList } from "../../constants/toolsList";
 import * as ROUTES from "../../constants/routes";
 import "./ProjectCard.scss";
 
-const ProjectCard = ({ project, setActiveProject }) => {
+const ProjectCard = ({ project, setActiveProject, actions }) => {
   const history = useHistory();
 
   const [isShowModal, setIsShowModal] = useState(false);
@@ -16,6 +19,7 @@ const ProjectCard = ({ project, setActiveProject }) => {
 
   const handleClick = () => {
     setActiveProject(project);
+    actions.setCurrentTool(toolsList.default);
     history.push(ROUTES.DASHBOARD);
   };
 
@@ -46,4 +50,10 @@ const ProjectCard = ({ project, setActiveProject }) => {
   );
 };
 
-export default ProjectCard;
+const mapDispatchToProps = (dispatch) => ({
+  actions: {
+    setCurrentTool: (tool) => dispatch(setCurrentTool(tool)),
+  },
+});
+
+export default connect(null, mapDispatchToProps)(ProjectCard);

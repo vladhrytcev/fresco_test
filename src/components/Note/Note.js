@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { connect } from "react-redux";
 import {
   setFocusedNoteId,
@@ -105,11 +105,6 @@ const Note = ({ note, actions, sizeCanvas, tools, notes }) => {
     window.addEventListener("mousemove", moveNote);
     window.addEventListener("mouseup", endMoveNote);
   };
-
-  useEffect(() => {
-    console.log(!!notes.focusedNoteId);
-    actions.setFocusedNoteId("");
-  }, []); // eslint-disable-line
 
   return (
     <div

@@ -3,6 +3,7 @@ const SELECT_ACTIVE_RECTANGLE = "SELECT_ACTIVE_RECTANGLE";
 const UPDATE_RECTANGLES = "UPDATE_RECTANGLES";
 const DISABLE_ALL_RECTANGLES = "DISABLE_ALL_RECTANGLES";
 const CHANGE_TEXT_IN_RECTANGLE = "CHANGE_TEXT_IN_RECTANGLE";
+const DELETE_ALL_RECTANGLES = "DELETE_ALL_RECTANGLES";
 
 export const createRectangle = (rectangle) => ({
   type: CREATE_RECTANGLE,
@@ -28,8 +29,12 @@ export const changeTextInRectangle = (rectangle) => ({
   payload: { rectangle },
 });
 
+export const deleteAllRectangles = (identifiedData) => ({
+  type: DELETE_ALL_RECTANGLES,
+  payload: { identifiedData },
+});
+
 const initialState = {
-  //activeRectangleId: "",
   rectanglesList: [],
 };
 
@@ -49,7 +54,6 @@ export const rectangles = (state = initialState, { type, payload }) => {
         return { ...rect, isSelectedRectangle: false };
       });
       return {
-        //activeRectangleId: payload.rectangleId,
         ...state,
         rectanglesList: newRectangles,
       };
@@ -76,6 +80,19 @@ export const rectangles = (state = initialState, { type, payload }) => {
         }
         return rect;
       });
+      return {
+        ...state,
+        rectanglesList: newRectangles,
+      };
+    }
+    case DELETE_ALL_RECTANGLES: {
+      const newRectangles = state.rectanglesList.filter(
+        (rect) =>
+          !(
+            rect.userId === payload.identifiedData.userId &&
+            rect.projectId === payload.identifiedData.projectId
+          )
+      );
       return {
         ...state,
         rectanglesList: newRectangles,

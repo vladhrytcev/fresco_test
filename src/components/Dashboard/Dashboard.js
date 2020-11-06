@@ -31,6 +31,7 @@ const Dashboard = ({ users, layers, actions, projects }) => {
     const layer = {
       projectId: projects.currentProject.projectId,
       userId: users.currentUser.userId,
+      isClear: false,
       drawLayer: stageRef.current.children[1].toJSON(),
     };
     actions.saveLayer(layer);
@@ -50,6 +51,20 @@ const Dashboard = ({ users, layers, actions, projects }) => {
     stageRef.current.add(drawLayer);
   }, []); //eslint-disable-line
 
+  useEffect(() => {
+    const findingLayer = layers.find(
+      (layer) =>
+        layer.userId === users.currentUser.userId &&
+        layer.projectId === projects.currentProject.projectId
+    );
+
+    if (findingLayer && findingLayer.isClear) {
+      stageRef.current.children[1].clear();
+      stageRef.current.children[1].removeChildren();
+      stageRef.current.children[1].clearBeforeDraw();
+    }
+  }, [users, projects, layers]);
+
   return (
     <HeaderTemplate>
       <div className="dashboard">
@@ -57,6 +72,7 @@ const Dashboard = ({ users, layers, actions, projects }) => {
           isShowPopup={isShowPopup}
           toggleShowingSavePopup={toggleShowingSavePopup}
           saveCanvas={saveCanvas}
+          drawLayerRef={drawLayerRef}
         />
         <CanvasContainer
           drawLayerRef={drawLayerRef}

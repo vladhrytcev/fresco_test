@@ -2,6 +2,7 @@ const SET_COLUMNS = "SET_COLUMNS";
 const CHANGE_TEXT_IN_COLUMN = "CHANGE_TEXT_IN_COLUMN";
 const CHANGE_POSITION_COLUMN = "CHANGE_POSITION_IN_COLUMN";
 const SET_MOVED_COLUMN_ID = "SET_MOVED_COLUMN_ID";
+const RESET_COLUMNS = "RESET_COLUMNS";
 
 export const setColumns = (columns) => ({
   type: SET_COLUMNS,
@@ -23,10 +24,16 @@ export const setMovedColumnId = (columnId) => ({
   payload: { columnId },
 });
 
+export const resetColumns = (column) => ({
+  type: RESET_COLUMNS,
+  payload: { column },
+});
+
 const initialState = {
   movedColumnId: "",
   columnsList: {
     digitalPolicyModelCanvas: {
+      columnsInitialLayout: [],
       columnsArray: [],
     },
   },
@@ -46,6 +53,7 @@ export const columns = (state = initialState, { type, payload }) => {
           ...state.columnsList,
           digitalPolicyModelCanvas: {
             ...state.digitalPolicyModelCanvas,
+            columnsInitialLayout: payload.columns.columns,
             columnsArray: !findingColumns
               ? state.columnsList.digitalPolicyModelCanvas.columnsArray.concat(
                   payload.columns
@@ -86,7 +94,7 @@ export const columns = (state = initialState, { type, payload }) => {
         columnsList: {
           ...state.columnsList,
           digitalPolicyModelCanvas: {
-            ...state.digitalPolicyModelCanvas,
+            ...state.columnsList.digitalPolicyModelCanvas,
             columnsArray: newColumnsArray,
           },
         },
@@ -129,7 +137,7 @@ export const columns = (state = initialState, { type, payload }) => {
         columnsList: {
           ...state.columnsList,
           digitalPolicyModelCanvas: {
-            ...state.digitalPolicyModelCanvas,
+            ...state.columnsList.digitalPolicyModelCanvas,
             columnsArray: newColumnsArray,
           },
         },
@@ -139,6 +147,34 @@ export const columns = (state = initialState, { type, payload }) => {
       return {
         ...state,
         movedColumnId: payload.columnId,
+      };
+    }
+    case RESET_COLUMNS: {
+      const newColumnsArray = state.columnsList.digitalPolicyModelCanvas.columnsArray.map(
+        (col) => {
+          if (
+            col.userId === payload.column.userId &&
+            col.projectId === payload.column.projectId
+          ) {
+            return {
+              ...col,
+              columns:
+                state.columnsList.digitalPolicyModelCanvas.columnsInitialLayout,
+            };
+          }
+          return col;
+        }
+      );
+
+      return {
+        ...state,
+        columnsList: {
+          ...state.columnsList,
+          digitalPolicyModelCanvas: {
+            ...state.columnsList.digitalPolicyModelCanvas,
+            columnsArray: newColumnsArray,
+          },
+        },
       };
     }
     default: {

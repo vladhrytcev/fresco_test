@@ -4,6 +4,7 @@ const ADD_TEXT_IN_JUST_CREATED_NOTE = "ADD_TEXT_IN_JUST_CREATED_NOTE";
 const CHANGE_POSITION_IN_EXISTING_NOTE = "CHANGE_POSITION_IN_EXISTING_NOTE";
 const CHANGE_TEXT_IN_EXISTING_NOTE = "CHANGE_TEXT_IN_EXISTING_NOTE";
 const SET_FOCUSED_NOTE_ID = "SET_FOCUSED_NOTE_ID";
+const DELETE_ALL_NOTES = "DELETE_ALL_NOTES";
 
 export const createNote = (note) => ({
   type: CREATE_NOTE,
@@ -33,6 +34,11 @@ export const changeTextInExistingNote = (note) => ({
 export const setFocusedNoteId = (noteId) => ({
   type: SET_FOCUSED_NOTE_ID,
   payload: { noteId },
+});
+
+export const deleteAllNotes = (identifiedData) => ({
+  type: DELETE_ALL_NOTES,
+  payload: { identifiedData },
 });
 
 const initialState = {
@@ -114,6 +120,19 @@ export const notes = (state = initialState, { type, payload }) => {
       return {
         ...state,
         focusedNoteId: payload.noteId,
+      };
+    }
+    case DELETE_ALL_NOTES: {
+      const newNotes = state.notesList.filter(
+        (note) =>
+          !(
+            note.userId === payload.identifiedData.userId &&
+            note.projectId === payload.identifiedData.projectId
+          )
+      );
+      return {
+        ...state,
+        notesList: newNotes,
       };
     }
     default: {

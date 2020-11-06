@@ -2,12 +2,17 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { setToolbarDimension } from "../../redux/dimensions/dimensions";
 import { setCurrentTool } from "../../redux/tools/tools";
+import { resetColumns } from "../../redux/columns/columns";
+import { deleteAllNotes } from "../../redux/notes/notes";
+import { deleteAllRectangles } from "../../redux/rectangles/rectangles";
+import { deleteLayer } from "../../redux/layers/layers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import { faPaintRoller } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-regular-svg-icons";
 import { faHandPointer } from "@fortawesome/free-solid-svg-icons";
 import { faColumns } from "@fortawesome/free-solid-svg-icons";
+import { faUndo } from "@fortawesome/free-solid-svg-icons";
 import { withResizeDetector } from "react-resize-detector";
 import ColorSelector from "../ColorSelector";
 import PopupSave from "../PopupSave";
@@ -21,7 +26,9 @@ const Toolbar = ({
   saveCanvas,
   tools,
   width,
+  users,
   isShowPopup,
+  drawLayerRef,
 }) => {
   const conditionShowingSelectedColor = tools.currentTool === toolsList.brush;
   const toolbarWidth = Math.floor(width);
@@ -30,6 +37,7 @@ const Toolbar = ({
     projects.currentProject.projectTemplate === "Custom";
 
   const saveButton = () => {
+    actions.setCurrentTool(toolsList.default);
     saveCanvas();
     toggleShowingSavePopup();
   };
@@ -38,6 +46,23 @@ const Toolbar = ({
   const switchPointerTool = () => actions.setCurrentTool(toolsList.pointer);
   const switchPaletteTool = () => actions.setCurrentTool(toolsList.palette);
   const switchRectangleTool = () => actions.setCurrentTool(toolsList.rectangle);
+
+  const clearCanvas = () => {
+    const identifiedData = {
+      userId: users.currentUser.userId,
+      projectId: projects.currentProject.projectId,
+    };
+
+    actions.setCurrentTool(toolsList.default);
+    actions.resetColumns(identifiedData);
+    actions.deleteAllNotes(identifiedData);
+    actions.deleteAllRectangles(identifiedData);
+    actions.deleteLayer(identifiedData);
+
+    drawLayerRef.current.clear();
+    drawLayerRef.current.removeChildren();
+    drawLayerRef.current.clearBeforeDraw();
+  };
 
   useEffect(() => {
     if (!!toolbarWidth) {
@@ -117,8 +142,11 @@ const Toolbar = ({
         className="toolbar__btn  toolbar__btn--save"
         onClick={saveButton}
       >
-        <FontAwesomeIcon icon={faSave} className="toolbar__icon" size="lg" />
+        <FontAwesomeIcon size="lg" icon={faSave} className="toolbar__icon" />
         <PopupSave isShowPopup={isShowPopup} />
+      </button>
+      <button title="clear" className="toolbar__btn" onClick={clearCanvas}>
+        <FontAwesomeIcon size="lg" icon={faUndo} className="toolbar__icon" />
       </button>
       <ColorSelector />
     </div>
@@ -126,6 +154,7 @@ const Toolbar = ({
 };
 
 const mapStateToProps = (state) => ({
+  users: state.users,
   tools: state.tools,
   projects: state.projects,
 });
@@ -135,6 +164,12 @@ const mapDispatchToProps = (dispatch) => ({
     setToolbarDimension: (dimension) =>
       dispatch(setToolbarDimension(dimension)),
     setCurrentTool: (tool) => dispatch(setCurrentTool(tool)),
+    resetColumns: (columns) => dispatch(resetColumns(columns)),
+    deleteAllNotes: (identifiedData) =>
+      dispatch(deleteAllNotes(identifiedData)),
+    deleteAllRectangles: (identifiedData) =>
+      dispatch(deleteAllRectangles(identifiedData)),
+    deleteLayer: (identifiedData) => dispatch(deleteLayer(identifiedData)),
   },
 });
 
